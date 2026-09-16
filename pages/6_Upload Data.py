@@ -32,9 +32,9 @@ try :
 
     dataLog = pd.DataFrame([{
                 "Waktu Upload" : waktuUpload,
-                "File Production Oil & Gas" : "Sheet Oil Gas",
-                "File WIP" : "Sheet WIP",
-                "File Well" : "Sheet Well",
+                "Production Oil & Gas" : "Sheet Oil Gas",
+                "WIP" : "Sheet WIP",
+                "Well" : "Sheet Well",
                 "Status" : "✅ Berhasil"
             }])
     
@@ -45,9 +45,9 @@ try :
 except Exception as e :
     dataLog = pd.DataFrame([{
                 "Waktu Upload" : waktuUpload,
-                "File Production Oil & Gas" : "-",
-                "File WIP" : "-",
-                "File Well" : "-",
+                "Production Oil & Gas" : "-",
+                "WIP" : "-",
+                "Well" : "-",
                 "Status" : "⚠️ Gagal"
             }])
     if os.path.exists(PATH_LOG) :
