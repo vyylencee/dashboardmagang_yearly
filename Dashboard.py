@@ -10,10 +10,7 @@ st.set_page_config(
 )
 
 tabelOilGas, tabelWip, tabelWell = read_data()
-st.write("DATA DARI GOOGLE SHEETS")
-st.write(tabelWip.shape)
-st.write(tabelWip.head())
-st.write(tabelWip.columns.tolist())
+st.line_chart(tabelWip["Flowrate (BWPD)"])
 
 # tabelOilGas["DATE"] = pd.to_datetime(tabelOilGas["DATE"])
 # minDate = tabelOilGas["DATE"].min()
