@@ -1,7 +1,12 @@
 import streamlit as st
+import datetime as dt
 import pandas as pd
-from load import load_data
+from load import save_data_to_google_sheets, save_data
 import os
+
+waktuUpload = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+PATH_LOG = "data/log upload.csv"
+
 st.set_page_config(
     page_title="Dashboard Team PO PT PEP Bunyu Field",
     layout="wide",
@@ -17,9 +22,38 @@ try :
     wipData = pd.read_excel(file, sheet_name="SUMUR INJEKSI")
     wellData = pd.read_excel(file, sheet_name="WELL")
 
-    load_data(OilGasData, wipData, wellData)
-except ValueError :
-    pass
+    OilGasData = save_data(OilGasData, "DATE")
+    wipData = save_data(wipData, "DATE")
+    wellData = save_data(wellData, "Date")
+
+    save_data_to_google_sheets(OilGasData, "tabelOilGas")
+    save_data_to_google_sheets(wipData, "tabelWip")
+    save_data_to_google_sheets(wellData, "tabelWell")
+
+    dataLog = pd.DataFrame([{
+                "Waktu Upload" : waktuUpload,
+                "File Production Oil & Gas" : "oilngas.csv",
+                "File WIP" : "wip.csv",
+                "File Well" : "well.csv",
+                "Status" : "✅ Berhasil"
+            }])
+    
+    if os.path.exists(PATH_LOG) :
+        dataLog.to_csv("data/log upload.csv", index=False, mode="a", header=False)
+    else :
+        dataLog.to_csv("data/log upload.csv", index=False, mode="w")
+except Exception as e :
+    dataLog = {
+                "Waktu Upload" : waktuUpload,
+                "File Production Oil & Gas" : "-",
+                "File WIP" : "-",
+                "File Sales" : "-",
+                "Status" : "⚠️ Gagal"
+            }
+    if os.path.exists(PATH_LOG) :
+        dataLog.to_csv("data/log upload.csv", index=False, mode="a", header=False)
+    else :
+        dataLog.to_csv("data/log upload.csv", index=False, mode="w")
 
 st.divider()
 st.subheader("Log Data Upload")

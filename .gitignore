@@ -1,2 +1,3 @@
 # Streamlit Configuration
-.streamlit/
+*.json
+.streamlit/secrets.toml
