@@ -44,23 +44,53 @@ def save_data_to_google_sheets (data, sheet_table) :
 
         df = df.astype(str)
 
-        values = [df.columns.tolist()] + df.values.tolist()
-        body = {
-            'values': values
-        }
+        # values = [df.columns.tolist()] + df.values.tolist()
+        # body = {
+        #     'values': values
+        # }
 
-        sheet.values().clear(
-        spreadsheetId=SPREADSHEET_ID,
-        range=f"{sheet_table}!A1:ZZ"
-        ).execute()
+        # sheet.values().clear(
+        # spreadsheetId=SPREADSHEET_ID,
+        # range=f"{sheet_table}!A1:ZZ"
+        # ).execute()
 
  
-        sheet.values().update(
+        # sheet.values().update(
+        #     spreadsheetId=SPREADSHEET_ID,
+        #     range=f"{sheet_table}!A1",
+        #     valueInputOption='RAW',
+        #     body=body
+        # ).execute()
+
+        # Cek data
+        st.write("Spreadsheet ID:", SPREADSHEET_ID)
+        st.write("Nama Sheet:", sheet_table)
+        st.write("Jumlah data:", df.shape)
+        st.write(df.head())
+
+        # HEADER + DATA
+        values = [df.columns.tolist()] + df.values.tolist()
+
+        st.write("Jumlah rows yang dikirim:", len(values))
+        st.write("Contoh payload:", values[:2])
+
+        # TEST: tulis satu data sederhana dulu
+        test_body = {
+            "values": [
+                ["TEST", "DATA"],
+                ["Berhasil", "Google Sheets"]
+            ]
+        }
+
+        result = sheet.values().update(
             spreadsheetId=SPREADSHEET_ID,
-            range=f"{sheet_table}!A1",
-            valueInputOption='RAW',
-            body=body
+            range=f"'{sheet_table}'!A1",
+            valueInputOption="RAW",
+            body=test_body
         ).execute()
+
+        st.write("HASIL API:")
+        st.write(result)
 
         return True
     except Exception as e :
