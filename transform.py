@@ -12,16 +12,7 @@ SPREADSHEET_ID = '1WwBp8XhrDM7WA-emRpvhDfbbRYVX_nWQtPmrwTmxEhA'
 
 service = build('sheets', 'v4', credentials=credential)
 st.write("Service account:", credential.service_account_email)
-
-try :
-    credential.refresh(Request())
-
-    st.success("Credential berhasil mendapatkan access token")
-    st.write("Token tersedia:", credential.token is not None)
-except Exception as e:
-    st.error("Gagal mendapatkan access token")
-    st.write("Error:", str(e))
-
+credential.refresh(Request())
 sheet = service.spreadsheets()
 
 bulan_map = {

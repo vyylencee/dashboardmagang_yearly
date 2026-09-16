@@ -31,17 +31,8 @@ def save_data (tabel, kolom) :
 @st.cache_data
 def save_data_to_google_sheets (data, sheet_table) :
     try:
+        credential.refresh(Request())
         service = build('sheets', 'v4', credentials=credential)
-        st.write("Service account:", credential.service_account_email)
-        
-        try :
-            credential.refresh(Request())
-
-            st.success("Credential berhasil mendapatkan access token")
-            st.write("Token tersedia:", credential.token is not None)
-        except Exception as e:
-            st.error("Gagal mendapatkan access token")
-            st.write("Error:", str(e))
 
         sheet = service.spreadsheets()
         df = data.copy()
@@ -56,51 +47,23 @@ def save_data_to_google_sheets (data, sheet_table) :
 
         df = df.astype(str)
 
-        # values = [df.columns.tolist()] + df.values.tolist()
-        # body = {
-        #     'values': values
-        # }
+        values = [df.columns.tolist()] + df.values.tolist()
+        body = {
+            'values': values
+        }
 
-        # sheet.values().clear(
-        # spreadsheetId=SPREADSHEET_ID,
-        # range=f"{sheet_table}!A1:ZZ"
-        # ).execute()
+        sheet.values().clear(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{sheet_table}!A1:ZZ"
+        ).execute()
 
  
-        # sheet.values().update(
-        #     spreadsheetId=SPREADSHEET_ID,
-        #     range=f"{sheet_table}!A1",
-        #     valueInputOption='RAW',
-        #     body=body
-        # ).execute()
-
-        # Cek data
-        st.write("Spreadsheet ID:", SPREADSHEET_ID)
-        st.write("Nama Sheet:", sheet_table)
-        st.write("Jumlah data:", df.shape)
-        st.write(df.head())
-
-        # HEADER + DATA
-        values = [df.columns.tolist()] + df.values.tolist()
-
-        st.write("Shape:", df.shape)
-        st.write("Kolom:", df.columns.tolist())
-        st.write("Data pertama:", values[:2])
-
-        try:
-            result = sheet.values().update(
-                spreadsheetId=SPREADSHEET_ID,
-                range=f"'{sheet_table}'!A1",
-                valueInputOption="RAW",
-                body={"values": values}
-            ).execute()
-
-            st.write("STEP 6")
-            st.write("HASIL:", result)
-
-        except Exception as e:
-            st.error("Gagal mengirim data:")
-            st.exception(e)
+        sheet.values().update(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f"{sheet_table}!A1",
+            valueInputOption='RAW',
+            body=body
+        ).execute()
 
         return True
     except Exception as e :
