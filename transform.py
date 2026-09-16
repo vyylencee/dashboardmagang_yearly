@@ -5,7 +5,7 @@ from google.oauth2.service_account import Credentials
 
 bulan = st.session_state.get("bulan", "Semua")
 
-credential = Credentials.from_service_account_file(st.secrets["gcp_service_account"], scopes="https://www.googleapis.com/auth/spreadsheets")
+credential = Credentials.from_service_account_info(dict(st.secrets["gcp_service_account"], scopes="https://www.googleapis.com/auth/spreadsheets"))
 
 SPREADSHEET_ID = '1WwBp8XhrDM7WA-emRpvhDfbbRYVX_nWQtPmrwTmxEhA'
 
