@@ -71,26 +71,18 @@ def save_data_to_google_sheets (data, sheet_table) :
         # HEADER + DATA
         values = [df.columns.tolist()] + df.values.tolist()
 
-        st.write("Jumlah rows yang dikirim:", len(values))
-        st.write("Contoh payload:", values[:2])
-
-        # TEST: tulis satu data sederhana dulu
-        test_body = {
-            "values": [
-                ["TEST", "DATA"],
-                ["Berhasil", "Google Sheets"]
-            ]
-        }
+        st.write("Shape:", df.shape)
+        st.write("Kolom:", df.columns.tolist())
+        st.write("Data pertama:", values[:2])
 
         result = sheet.values().update(
             spreadsheetId=SPREADSHEET_ID,
             range=f"'{sheet_table}'!A1",
             valueInputOption="RAW",
-            body=test_body
+            body={"values": values}
         ).execute()
 
-        st.write("HASIL API:")
-        st.write(result)
+        st.write("HASIL:", result)
 
         return True
     except Exception as e :
