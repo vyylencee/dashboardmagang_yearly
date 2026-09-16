@@ -5,11 +5,14 @@ from google.oauth2.service_account import Credentials
 
 bulan = st.session_state.get("bulan", "Semua")
 
-credential = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes="https://www.googleapis.com/auth/spreadsheets")
+credential = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=["https://www.googleapis.com/auth/spreadsheets"])
 
 SPREADSHEET_ID = '1WwBp8XhrDM7WA-emRpvhDfbbRYVX_nWQtPmrwTmxEhA'
 
 service = build('sheets', 'v4', credentials=credential)
+st.write("Credential valid:", credential.valid)
+st.write("Token tersedia:", credential.token is not None)
+st.write("Service account:", credential.service_account_email)
 sheet = service.spreadsheets()
 
 bulan_map = {

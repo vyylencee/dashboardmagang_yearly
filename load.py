@@ -13,7 +13,7 @@ SERVICE_ACCOUNT_FILE = 'dashboard-magang-eb8250cdacca.json'
  
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-credential = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes="https://www.googleapis.com/auth/spreadsheets")
+credential = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=["https://www.googleapis.com/auth/spreadsheets"])
  
 SPREADSHEET_ID = '1WwBp8XhrDM7WA-emRpvhDfbbRYVX_nWQtPmrwTmxEhA'
 RANGE_NAME = 'Sheet1'
@@ -31,6 +31,9 @@ def save_data (tabel, kolom) :
 def save_data_to_google_sheets (data, sheet_table) :
     try:
         service = build('sheets', 'v4', credentials=credential)
+        st.write("Credential valid:", credential.valid)
+        st.write("Token tersedia:", credential.token is not None)
+        st.write("Service account:", credential.service_account_email)
         sheet = service.spreadsheets()
         df = data.copy()
 
