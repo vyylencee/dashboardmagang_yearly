@@ -43,13 +43,13 @@ try :
     else :
         dataLog.to_csv("data/log upload.csv", index=False, mode="w")
 except Exception as e :
-    dataLog = {
+    dataLog = pd.DataFrame([{
                 "Waktu Upload" : waktuUpload,
                 "File Production Oil & Gas" : "-",
                 "File WIP" : "-",
                 "File Well" : "-",
                 "Status" : "⚠️ Gagal"
-            }
+            }])
     if os.path.exists(PATH_LOG) :
         dataLog.to_csv("data/log upload.csv", index=False, mode="a", header=False)
     else :
