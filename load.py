@@ -5,6 +5,7 @@ import streamlit as st
 import os
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
+from google.auth.transport.requests import Request
 
 waktuUpload = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 PATH_LOG = "data/log upload.csv"
@@ -31,9 +32,17 @@ def save_data (tabel, kolom) :
 def save_data_to_google_sheets (data, sheet_table) :
     try:
         service = build('sheets', 'v4', credentials=credential)
-        st.write("Credential valid:", credential.valid)
-        st.write("Token tersedia:", credential.token is not None)
         st.write("Service account:", credential.service_account_email)
+        
+        try :
+            credential.refresh(Request())
+
+            st.success("Credential berhasil mendapatkan access token")
+            st.write("Token tersedia:", credential.token is not None)
+        except Exception as e:
+            st.error("Gagal mendapatkan access token")
+            st.write("Error:", str(e))
+
         sheet = service.spreadsheets()
         df = data.copy()
 

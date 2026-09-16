@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
+from google.auth.transport.requests import Request
 
 bulan = st.session_state.get("bulan", "Semua")
 
@@ -10,9 +11,17 @@ credential = Credentials.from_service_account_info(st.secrets["gcp_service_accou
 SPREADSHEET_ID = '1WwBp8XhrDM7WA-emRpvhDfbbRYVX_nWQtPmrwTmxEhA'
 
 service = build('sheets', 'v4', credentials=credential)
-st.write("Credential valid:", credential.valid)
-st.write("Token tersedia:", credential.token is not None)
 st.write("Service account:", credential.service_account_email)
+
+try :
+    credential.refresh(Request())
+
+    st.success("Credential berhasil mendapatkan access token")
+    st.write("Token tersedia:", credential.token is not None)
+except Exception as e:
+    st.error("Gagal mendapatkan access token")
+    st.write("Error:", str(e))
+
 sheet = service.spreadsheets()
 
 bulan_map = {
