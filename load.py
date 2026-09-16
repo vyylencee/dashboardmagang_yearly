@@ -40,15 +40,20 @@ def save_data_to_google_sheets (data, sheet_table) :
         else x
         )
 
+        df = df.fillna("")
+
+        df = df.astype(str)
+
+        values = [df.columns.tolist()] + df.values.tolist()
+        body = {
+            'values': values
+        }
+
         sheet.values().clear(
         spreadsheetId=SPREADSHEET_ID,
         range=f"{sheet_table}!A1:ZZ"
         ).execute()
 
-        values = [df.columns.tolist()] + df.fillna("").values.tolist()
-        body = {
-            'values': values
-        }
  
         sheet.values().update(
             spreadsheetId=SPREADSHEET_ID,
