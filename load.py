@@ -13,7 +13,7 @@ SERVICE_ACCOUNT_FILE = 'dashboard-magang-eb8250cdacca.json'
  
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-credential = Credentials.from_service_account_info(dict(st.secrets["gcp_service_account"]), scopes="https://www.googleapis.com/auth/spreadsheets")
+credential = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes="https://www.googleapis.com/auth/spreadsheets")
  
 SPREADSHEET_ID = '1WwBp8XhrDM7WA-emRpvhDfbbRYVX_nWQtPmrwTmxEhA'
 RANGE_NAME = 'Sheet1'
