@@ -27,7 +27,7 @@ try :
     wipData = save_data(wipData, "DATE")
     wellData = save_data(wellData, "Date")
 
-    st.form_submit_button("Upload Data", on_click=save_data_to_google_sheets, args=(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell"))
+    st.button("Upload Data", on_click=save_data_to_google_sheets, args=(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell"))
     st.success("✅ Data berhasil diupload ke Google Sheets")
 
     dataLog = pd.DataFrame([{
