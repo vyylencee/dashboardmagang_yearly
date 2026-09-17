@@ -42,6 +42,9 @@ try :
         dataLog.to_csv("data/log upload.csv", index=False, mode="a", header=False)
     else :
         dataLog.to_csv("data/log upload.csv", index=False, mode="w")
+
+    st.cache_data.clear()
+    st.rerun()
 except Exception as e :
     dataLog = pd.DataFrame([{
                 "Waktu Upload" : waktuUpload,
