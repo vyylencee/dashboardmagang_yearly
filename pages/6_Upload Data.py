@@ -14,52 +14,76 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
 st.title("⬆️ Upload Data Production")
 st.divider()
 
 file = st.file_uploader("Upload Data dengan format .xlsx, .xls", type=["xlsx", "xls"])
-button_kirim = st.button("Upload Data")
 
-OilGasData = pd.read_excel(file, sheet_name="PROD")
-wipData = pd.read_excel(file, sheet_name="SUMUR INJEKSI")
-wellData = pd.read_excel(file, sheet_name="WELL")
+bar_progress = st.progress(0)
+text_progress = st.empty()
 
-OilGasData = save_data(OilGasData, "DATE")
-wipData = save_data(wipData, "DATE")
-wellData = save_data(wellData, "Date")
+if file is not None:
+    OilGasData = pd.read_excel(file, sheet_name="PROD")
+    text_progress.text("Membaca sheet Prod... 13%")
+    bar_progress.progress(13)
 
-try:
-    if button_kirim:
+    wipData = pd.read_excel(file, sheet_name="SUMUR INJEKSI")
+    text_progress.text("Membaca sheet Sumur Injeksi... 26%")
+    bar_progress.progress(26)
+
+    wellData = pd.read_excel(file, sheet_name="WELL")
+    text_progress.text("Membaca sheet Well... 39%")
+    bar_progress.progress(39)
+
+    OilGasData = save_data(OilGasData, "DATE")
+    text_progress.text("Filter data Prod berdasarkan tahun ini... 52%")
+    bar_progress.progress(52)
+
+    wipData = save_data(wipData, "DATE")
+    text_progress.text("Filter data Sumur Injeksi berdasarkan tahun ini... 65%")
+    bar_progress.progress(65)
+
+    wellData = save_data(wellData, "Date")
+    text_progress.text("Filter data Well berdasarkan tahun ini... 78%")
+    bar_progress.progress(78)
+
+
+    text_progress.text("Mengupload data ke Google Sheets... 91%")
+    bar_progress.progress(91)
+
+    try:
         save_data_to_google_sheets(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell")
 
-except Exception as e :
-    dataLog = pd.DataFrame([{
-                "Waktu Upload" : waktuUpload,
-                "Production Oil & Gas" : "-",
-                "WIP" : "-",
-                "Well" : "-",
-                "Status" : "⚠️ Gagal"
-            }])
-    if os.path.exists(PATH_LOG) :
-        dataLog.to_csv("assets/log upload.csv", index=False, mode="a", header=False)
-    else :
-        dataLog.to_csv("assets/log upload.csv", index=False, mode="w")
-finally :
-    if button_kirim:
+        text_progress.text("Data berhasil diupload ke Google Sheets... 100%")
+        bar_progress.progress(100)
         st.success("✅ Data berhasil diupload ke Google Sheets")
-    
-    dataLog = pd.DataFrame([{
-                "Waktu Upload" : waktuUpload,
-                "Production Oil & Gas" : "Sheet Oil Gas",
-                "WIP" : "Sheet WIP",
-                "Well" : "Sheet Well",
-                "Status" : "✅ Berhasil"
-            }])
-    
-    if os.path.exists(PATH_LOG) :
-        dataLog.to_csv("assets/log upload.csv", index=False, mode="a", header=False)
-    else :
-        dataLog.to_csv("assets/log upload.csv", index=False, mode="w")
+        
+        dataLog = pd.DataFrame([{
+                    "Waktu Upload" : waktuUpload,
+                    "Production Oil & Gas" : "Sheet Oil Gas",
+                    "WIP" : "Sheet WIP",
+                    "Well" : "Sheet Well",
+                    "Status" : "✅ Berhasil"
+                }])
+        
+        if os.path.exists(PATH_LOG) :
+            dataLog.to_csv("assets/log upload.csv", index=False, mode="a", header=False)
+        else :
+            dataLog.to_csv("assets/log upload.csv", index=False, mode="w")
+
+    except Exception as e :
+        dataLog = pd.DataFrame([{
+                    "Waktu Upload" : waktuUpload,
+                    "Production Oil & Gas" : "-",
+                    "WIP" : "-",
+                    "Well" : "-",
+                    "Status" : "⚠️ Gagal"
+                }])
+        if os.path.exists(PATH_LOG) :
+            dataLog.to_csv("assets/log upload.csv", index=False, mode="a", header=False)
+        else :
+            dataLog.to_csv("assets/log upload.csv", index=False, mode="w")
 
 st.divider()
 st.subheader("Log Data Upload")

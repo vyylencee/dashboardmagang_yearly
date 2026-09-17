@@ -115,7 +115,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
         ).execute()
 
         st.cache_data.clear()
-        st.rerun()
+        # st.rerun()
 
         return True
     except Exception as e :
