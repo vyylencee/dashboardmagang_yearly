@@ -27,9 +27,7 @@ try :
     wipData = save_data(wipData, "DATE")
     wellData = save_data(wellData, "Date")
 
-    save_data_to_google_sheets(OilGasData, "tabelOilGas")
-    save_data_to_google_sheets(wipData, "tabelWip")
-    save_data_to_google_sheets(wellData, "tabelWell")
+    save_data_to_google_sheets(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell")
 
     dataLog = pd.DataFrame([{
                 "Waktu Upload" : waktuUpload,

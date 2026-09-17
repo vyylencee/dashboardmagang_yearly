@@ -29,40 +29,89 @@ def save_data (tabel, kolom) :
     return tabel[tabel[kolom].dt.year == tahunIni]
 
 @st.cache_data(ttl=60)
-def save_data_to_google_sheets (data, sheet_table) :
+def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
     try:
         credential.refresh(Request())
         service = build('sheets', 'v4', credentials=credential)
 
         sheet = service.spreadsheets()
-        df = data.copy()
+        df1 = data1.copy()
+        df2 = data2.copy()
+        df3 = data3.copy()
 
-        df = df.map(
+        df1 = df1.map(
         lambda x: x.strftime("%Y-%m-%d")
         if isinstance(x, (pd.Timestamp, dt.datetime, dt.date))
         else x
         )
+        df2 = df2.map(
+                lambda x: x.strftime("%Y-%m-%d")
+                if isinstance(x, (pd.Timestamp, dt.datetime, dt.date))
+                else x
+                )
+        df3 = df3.map(
+                lambda x: x.strftime("%Y-%m-%d")
+                if isinstance(x, (pd.Timestamp, dt.datetime, dt.date))
+                else x
+                )
 
-        df = df.fillna("")
+        df1 = df1.fillna("")
+        df2 = df2.fillna("")
+        df3 = df3.fillna("")
 
-        df = df.astype(str)
+        df1 = df1.astype(str)
+        df2 = df2.astype(str)
+        df3 = df3.astype(str)
 
-        values = [df.columns.tolist()] + df.values.tolist()
-        body = {
-            'values': values
+        values1 = [df1.columns.tolist()] + df1.values.tolist()
+        values2 = [df2.columns.tolist()] + df2.values.tolist()
+        values3 = [df3.columns.tolist()] + df3.values.tolist()
+        body1 = {
+            'values': values1
+        }
+        body2 = {
+            'values': values2
+        }
+        body3 = {
+            'values': values3
         }
 
         sheet.values().clear(
         spreadsheetId=SPREADSHEET_ID,
-        range=f"{sheet_table}!A1:ZZ"
+        range=f"{sheet1}!A1:ZZ"
         ).execute()
 
  
         sheet.values().update(
             spreadsheetId=SPREADSHEET_ID,
-            range=f"{sheet_table}!A1",
+            range=f"{sheet1}!A1",
             valueInputOption='RAW',
-            body=body
+            body=body1
+        ).execute()
+
+        sheet.values().clear(
+                spreadsheetId=SPREADSHEET_ID,
+                range=f"{sheet2}!A1:ZZ"
+                ).execute()
+        
+        sheet.values().update(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f"{sheet2}!A1",
+            valueInputOption='RAW',
+            body=body2
+        ).execute()
+
+        sheet.values().clear(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{sheet3}!A1:ZZ"
+        ).execute()
+
+    
+        sheet.values().update(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f"{sheet3}!A1",
+            valueInputOption='RAW',
+            body=body3
         ).execute()
 
         st.cache_data.clear()
