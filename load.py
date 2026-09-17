@@ -65,6 +65,9 @@ def save_data_to_google_sheets (data, sheet_table) :
             body=body
         ).execute()
 
+        st.cache_data.clear()
+        st.rerun()
+
         return True
     except Exception as e :
         print('Terjadi kesalahan saat memasukkan data ke Google Sheets : ', e)
