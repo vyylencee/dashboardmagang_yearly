@@ -28,7 +28,7 @@ def save_data (tabel, kolom) :
 
     return tabel[tabel[kolom].dt.year == tahunIni]
 
-@st.cache_data()
+@st.cache_data(ttl=60)
 def save_data_to_google_sheets (data, sheet_table) :
     try:
         credential.refresh(Request())

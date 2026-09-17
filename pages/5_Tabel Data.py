@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from transform import transform_data
-from load import read_data
 
 st.set_page_config(
     page_title="Dashboard Team PO PT PEP Bunyu Field",

@@ -31,7 +31,7 @@ bulan_map = {
 }
 
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def pull_data(sheet_table):
     result = sheet.values().get(
         spreadsheetId=SPREADSHEET_ID,

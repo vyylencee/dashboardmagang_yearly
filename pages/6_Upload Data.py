@@ -1,10 +1,11 @@
 import streamlit as st
 import datetime as dt
 import pandas as pd
+from zoneinfo import ZoneInfo
 from load import save_data_to_google_sheets, save_data
 import os
 
-waktuUpload = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+waktuUpload = dt.datetime.now(ZoneInfo("Asia/Makassar")).strftime("%Y-%m-%d %H:%M:%S")
 PATH_LOG = "data/log upload.csv"
 
 st.set_page_config(
