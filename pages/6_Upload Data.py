@@ -39,9 +39,9 @@ try :
             }])
     
     if os.path.exists(PATH_LOG) :
-        dataLog.to_csv("data/log upload.csv", index=False, mode="a", header=False)
+        dataLog.to_csv("assets/log upload.csv", index=False, mode="a", header=False)
     else :
-        dataLog.to_csv("data/log upload.csv", index=False, mode="w")
+        dataLog.to_csv("assets/log upload.csv", index=False, mode="w")
 
     st.cache_data.clear()
     st.rerun()
@@ -54,15 +54,15 @@ except Exception as e :
                 "Status" : "⚠️ Gagal"
             }])
     if os.path.exists(PATH_LOG) :
-        dataLog.to_csv("data/log upload.csv", index=False, mode="a", header=False)
+        dataLog.to_csv("assets/log upload.csv", index=False, mode="a", header=False)
     else :
-        dataLog.to_csv("data/log upload.csv", index=False, mode="w")
+        dataLog.to_csv("assets/log upload.csv", index=False, mode="w")
 
 st.divider()
 st.subheader("Log Data Upload")
 
-if os.path.exists("data/log upload.csv")  :
-    dataLog = pd.read_csv("data/log upload.csv")
+if os.path.exists("assets/log upload.csv")  :
+    dataLog = pd.read_csv("assets/log upload.csv")
     st.dataframe(dataLog, hide_index=True)
 else :
     st.write("Belum ada data yang diupload.")
