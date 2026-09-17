@@ -19,17 +19,19 @@ st.divider()
 
 file = st.file_uploader("Upload Data dengan format .xlsx, .xls", type=["xlsx", "xls"])
 button_kirim = st.button("Upload Data")
-try :
-    OilGasData = pd.read_excel(file, sheet_name="PROD")
-    wipData = pd.read_excel(file, sheet_name="SUMUR INJEKSI")
-    wellData = pd.read_excel(file, sheet_name="WELL")
 
-    OilGasData = save_data(OilGasData, "DATE")
-    wipData = save_data(wipData, "DATE")
-    wellData = save_data(wellData, "Date")
+OilGasData = pd.read_excel(file, sheet_name="PROD")
+wipData = pd.read_excel(file, sheet_name="SUMUR INJEKSI")
+wellData = pd.read_excel(file, sheet_name="WELL")
 
-    if button_kirim :
+OilGasData = save_data(OilGasData, "DATE")
+wipData = save_data(wipData, "DATE")
+wellData = save_data(wellData, "Date")
+
+try:
+    if button_kirim:
         save_data_to_google_sheets(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell")
+
 except Exception as e :
     dataLog = pd.DataFrame([{
                 "Waktu Upload" : waktuUpload,
