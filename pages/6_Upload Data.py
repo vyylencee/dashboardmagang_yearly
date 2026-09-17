@@ -28,6 +28,7 @@ try :
     wellData = save_data(wellData, "Date")
 
     save_data_to_google_sheets(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell")
+    st.success("✅ Data berhasil diupload ke Google Sheets")
 
     dataLog = pd.DataFrame([{
                 "Waktu Upload" : waktuUpload,
