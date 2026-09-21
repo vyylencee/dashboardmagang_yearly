@@ -1,12 +1,13 @@
 import pandas as pd
 import datetime as dt
 from datetime import date, timedelta
+from zoneinfo import ZoneInfo
 import streamlit as st
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 
-waktuUpload = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+waktuUpload = dt.datetime.now(ZoneInfo("Asia/Makassar")).strftime("%Y-%m-%d %H:%M:%S")
 PATH_LOG = "data/log upload.csv"
 
 SERVICE_ACCOUNT_FILE = 'dashboard-magang-eb8250cdacca.json'
