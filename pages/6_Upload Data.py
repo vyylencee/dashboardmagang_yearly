@@ -24,32 +24,32 @@ bar_progress = st.progress(0)
 text_progress = st.empty()
 
 if file is not None:
+    text_progress.text("Membaca sheet Prod...")
     OilGasData = pd.read_excel(file, sheet_name="PROD")
-    text_progress.text("Membaca sheet Prod... 13%")
     bar_progress.progress(13)
 
+    text_progress.text("Membaca sheet Sumur Injeksi...")
     wipData = pd.read_excel(file, sheet_name="SUMUR INJEKSI")
-    text_progress.text("Membaca sheet Sumur Injeksi... 26%")
     bar_progress.progress(26)
 
+    text_progress.text("Membaca sheet Well...")
     wellData = pd.read_excel(file, sheet_name="WELL")
-    text_progress.text("Membaca sheet Well... 39%")
     bar_progress.progress(39)
 
+    text_progress.text("Filter data Prod berdasarkan tahun ini...")
     OilGasData = save_data(OilGasData, "DATE")
-    text_progress.text("Filter data Prod berdasarkan tahun ini... 52%")
     bar_progress.progress(52)
 
+    text_progress.text("Filter data Sumur Injeksi berdasarkan tahun ini...")
     wipData = save_data(wipData, "DATE")
-    text_progress.text("Filter data Sumur Injeksi berdasarkan tahun ini... 65%")
     bar_progress.progress(65)
 
+    text_progress.text("Filter data Well berdasarkan tahun ini...")
     wellData = save_data(wellData, "Date")
-    text_progress.text("Filter data Well berdasarkan tahun ini... 78%")
     bar_progress.progress(78)
 
 
-    text_progress.text("Mengupload data ke Google Sheets... 91%")
+    text_progress.text("Mengupload data ke Google Sheets...")
     bar_progress.progress(91)
 
     try:

@@ -11,7 +11,6 @@ credential = Credentials.from_service_account_info(st.secrets["gcp_service_accou
 SPREADSHEET_ID = '1WwBp8XhrDM7WA-emRpvhDfbbRYVX_nWQtPmrwTmxEhA'
 
 service = build('sheets', 'v4', credentials=credential)
-st.write("Service account:", credential.service_account_email)
 credential.refresh(Request())
 sheet = service.spreadsheets()
 

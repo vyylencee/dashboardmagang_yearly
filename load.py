@@ -2,7 +2,6 @@ import pandas as pd
 import datetime as dt
 from datetime import date, timedelta
 import streamlit as st
-import os
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
@@ -66,57 +65,46 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
         values1 = [df1.columns.tolist()] + df1.values.tolist()
         values2 = [df2.columns.tolist()] + df2.values.tolist()
         values3 = [df3.columns.tolist()] + df3.values.tolist()
-        body1 = {
-            'values': values1
-        }
-        body2 = {
-            'values': values2
-        }
-        body3 = {
-            'values': values3
-        }
 
-        sheet.values().clear(
-        spreadsheetId=SPREADSHEET_ID,
-        range=f"{sheet1}!A1:ZZ"
-        ).execute()
+        batch_upload = 1000
 
- 
-        sheet.values().update(
-            spreadsheetId=SPREADSHEET_ID,
-            range=f"{sheet1}!A1",
-            valueInputOption='RAW',
-            body=body1
-        ).execute()
-
-        sheet.values().clear(
+        for a in range (0, len(values1), batch_upload):
+            batch_values1 = values1[a:a + batch_upload]
+            body1 = {
+                'values': batch_values1
+            }
+            sheet.values().append(
                 spreadsheetId=SPREADSHEET_ID,
-                range=f"{sheet2}!A1:ZZ"
-                ).execute()
-        
-        sheet.values().update(
-            spreadsheetId=SPREADSHEET_ID,
-            range=f"{sheet2}!A1",
-            valueInputOption='RAW',
-            body=body2
-        ).execute()
+                range=f"{sheet1}!A1",
+                valueInputOption="RAW",
+                body=body1
+            ).execute()
 
-        sheet.values().clear(
-        spreadsheetId=SPREADSHEET_ID,
-        range=f"{sheet3}!A1:ZZ"
-        ).execute()
+        for b in range (0, len(values2), batch_upload):
+            batch_values2 = values2[b:b + batch_upload]
+            body2 = {
+                'values': batch_values2
+            }
+            sheet.values().append(
+                spreadsheetId=SPREADSHEET_ID,
+                range=f"{sheet2}!A1",
+                valueInputOption="RAW",
+                body=body2
+            ).execute()
 
-    
-        sheet.values().update(
-            spreadsheetId=SPREADSHEET_ID,
-            range=f"{sheet3}!A1",
-            valueInputOption='RAW',
-            body=body3
-        ).execute()
+        for c in range (0, len(values3), batch_upload):
+            batch_values3 = values3[c:c + batch_upload]
+            body3 = {
+                'values': batch_values3
+            }
+            sheet.values().append(
+                spreadsheetId=SPREADSHEET_ID,
+                range=f"{sheet3}!A1",
+                valueInputOption="RAW",
+                body=body3
+            ).execute()   
 
         st.cache_data.clear()
-        # st.rerun()
-
         return True
     except Exception as e :
         print('Terjadi kesalahan saat memasukkan data ke Google Sheets : ', e)

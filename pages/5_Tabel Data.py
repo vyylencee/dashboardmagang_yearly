@@ -18,30 +18,32 @@ bulan = st.sidebar.selectbox("Pilih Bulan",
                             "September", "Oktober",
                             "November", "Desember"], key="month")
 
-tabelOilGas, tabelWip, tabelWell = transform_data(bulan)
+try :
+    tabelOilGas, tabelWip, tabelWell = transform_data(bulan)
 
-if bulan != "Semua":
-    st.subheader(f"Tabel Data Production {bulan} {tabelOilGas['DATE'].max().year}")
-    st.dataframe(tabelOilGas, hide_index=True)
-else :
-    st.subheader(f"Tabel Data Production Tahun {tabelOilGas['DATE'].max().year}")
-    st.dataframe(tabelOilGas, hide_index=True)
+    if bulan != "Semua":
+        st.subheader(f"Tabel Data Production {bulan} {tabelOilGas['DATE'].max().year}")
+        st.dataframe(tabelOilGas, hide_index=True)
+    else :
+        st.subheader(f"Tabel Data Production Tahun {tabelOilGas['DATE'].max().year}")
+        st.dataframe(tabelOilGas, hide_index=True)
 
-st.divider()
+    st.divider()
 
-if bulan != "Semua":
-    st.subheader(f"Tabel Data Water Injection {bulan} {tabelOilGas['DATE'].max().year}")
-    st.dataframe(tabelWip, hide_index=True)
-else :
-    st.subheader(f"Tabel Data Water Injection Tahun {tabelOilGas['DATE'].max().year}")
-    st.dataframe(tabelWip, hide_index=True)
+    if bulan != "Semua":
+        st.subheader(f"Tabel Data Water Injection {bulan} {tabelOilGas['DATE'].max().year}")
+        st.dataframe(tabelWip, hide_index=True)
+    else :
+        st.subheader(f"Tabel Data Water Injection Tahun {tabelOilGas['DATE'].max().year}")
+        st.dataframe(tabelWip, hide_index=True)
 
-st.divider()
+    st.divider()
 
-if bulan != "Semua":
-    st.subheader(f"Tabel Data Well {bulan} {tabelOilGas['DATE'].max().year}")
-    st.dataframe(tabelWell, hide_index=True)
-else :
-    st.subheader(f"Tabel Data Well Tahun {tabelOilGas['DATE'].max().year}")
-    st.dataframe(tabelWell, hide_index=True)
-    
+    if bulan != "Semua":
+        st.subheader(f"Tabel Data Well {bulan} {tabelOilGas['DATE'].max().year}")
+        st.dataframe(tabelWell, hide_index=True)
+    else :
+        st.subheader(f"Tabel Data Well Tahun {tabelOilGas['DATE'].max().year}")
+        st.dataframe(tabelWell, hide_index=True)
+except ImportError as e :
+    st.error("Data tidak tersedia pada database.")
