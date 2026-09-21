@@ -73,7 +73,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
             body1 = {
                 'values': batch_values1
             }
-            sheet.values().append(
+            sheet.values().update(
                 spreadsheetId=SPREADSHEET_ID,
                 range=f"{sheet1}!A1",
                 valueInputOption="RAW",
@@ -85,7 +85,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
             body2 = {
                 'values': batch_values2
             }
-            sheet.values().append(
+            sheet.values().update(
                 spreadsheetId=SPREADSHEET_ID,
                 range=f"{sheet2}!A1",
                 valueInputOption="RAW",
@@ -97,7 +97,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
             body3 = {
                 'values': batch_values3
             }
-            sheet.values().append(
+            sheet.values().update(
                 spreadsheetId=SPREADSHEET_ID,
                 range=f"{sheet3}!A1",
                 valueInputOption="RAW",
@@ -108,6 +108,25 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
         return True
     except Exception as e :
         print('Terjadi kesalahan saat memasukkan data ke Google Sheets : ', e)
+
+def log_data () :
+    credential.refresh(Request())
+    service = build('sheets', 'v4', credentials=credential)
+    sheet = service.spreadsheets()
+
+    body = {
+        'values': [[waktuUpload, "Sheet Oil Gas", "Sheet WIP", "Sheet Well", "✅ Berhasil"]]
+    }
+    result = sheet.values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range="log!A2",
+        valueInputOption="RAW",
+        insertDataOption="INSERT_ROWS",
+        body=body
+    ).execute()
+
+    st.cache_data.clear()
+    return True
 
 # def load_data (oilgas, wip, well) :
 #     try :

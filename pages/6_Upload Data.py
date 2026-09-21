@@ -2,10 +2,13 @@ import streamlit as st
 import datetime as dt
 import pandas as pd
 from zoneinfo import ZoneInfo
-from load import save_data_to_google_sheets, save_data
+from load import save_data_to_google_sheets, save_data, log_data
 import os
+from googleapiclient.discovery import build
+from google.oauth2.service_account import Credentials
+from google.auth.transport.requests import Request
 
-waktuUpload = dt.datetime.now(ZoneInfo("Asia/Makassar")).strftime("%Y-%m-%d %H:%M:%S")
+waktuUpload = dt.datetime.now(ZoneInfo("Asia/Makassar"))
 PATH_LOG = "data/log upload.csv"
 
 st.set_page_config(
@@ -17,6 +20,14 @@ st.set_page_config(
 
 st.title("⬆️ Upload Data Production")
 st.divider()
+
+credential = Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=["https://www.googleapis.com/auth/spreadsheets"])
+
+SPREADSHEET_ID = '1WwBp8XhrDM7WA-emRpvhDfbbRYVX_nWQtPmrwTmxEhA'
+
+service = build('sheets', 'v4', credentials=credential)
+credential.refresh(Request())
+sheet = service.spreadsheets()
 
 file = st.file_uploader("Upload Data dengan format .xlsx, .xls", type=["xlsx", "xls"])
 
@@ -54,23 +65,10 @@ if file is not None:
 
     try:
         save_data_to_google_sheets(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell")
-
-        text_progress.text("Data berhasil diupload ke Google Sheets... 100%")
+        log_data()
+        text_progress.text("Data berhasil diupload ke Google Sheets... ")
         bar_progress.progress(100)
         st.success("✅ Data berhasil diupload ke Google Sheets")
-        
-        dataLog = pd.DataFrame([{
-                    "Waktu Upload" : waktuUpload,
-                    "Production Oil & Gas" : "Sheet Oil Gas",
-                    "WIP" : "Sheet WIP",
-                    "Well" : "Sheet Well",
-                    "Status" : "✅ Berhasil"
-                }])
-        
-        if os.path.exists(PATH_LOG) :
-            dataLog.to_csv("assets/log upload.csv", index=False, mode="a", header=False)
-        else :
-            dataLog.to_csv("assets/log upload.csv", index=False, mode="w")
 
     except Exception as e :
         dataLog = pd.DataFrame([{
@@ -88,8 +86,24 @@ if file is not None:
 st.divider()
 st.subheader("Log Data Upload")
 
-if os.path.exists("assets/log upload.csv")  :
-    dataLog = pd.read_csv("assets/log upload.csv")
-    st.dataframe(dataLog, hide_index=True)
-else :
-    st.write("Belum ada data yang diupload.")
+@st.cache_data(ttl=60)
+def pull_data(sheet_table):
+    result = sheet.values().get(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{sheet_table}!A1:ZZ"
+    ).execute()
+
+    values = result.get('values', [])
+
+    if not values:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(values[1:], columns=values[0])
+
+    return df
+
+def read_data() :
+    log_data = pull_data("log")
+    return log_data
+
+st.dataframe(read_data(), hide_index=True)
