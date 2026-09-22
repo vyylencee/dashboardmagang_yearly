@@ -2,8 +2,7 @@ import streamlit as st
 import datetime as dt
 import pandas as pd
 from zoneinfo import ZoneInfo
-from load import save_data_to_google_sheets, save_data, log_data
-import os
+from load import save_data_to_google_sheets, save_data
 from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
 from google.auth.transport.requests import Request
@@ -65,23 +64,12 @@ if file is not None:
 
     try:
         save_data_to_google_sheets(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell")
-        log_data()
         text_progress.text("Data berhasil diupload ke Google Sheets... ")
         bar_progress.progress(100)
         st.success("✅ Data berhasil diupload ke Google Sheets")
 
     except Exception as e :
-        dataLog = pd.DataFrame([{
-                    "Waktu Upload" : waktuUpload,
-                    "Production Oil & Gas" : "-",
-                    "WIP" : "-",
-                    "Well" : "-",
-                    "Status" : "⚠️ Gagal"
-                }])
-        if os.path.exists(PATH_LOG) :
-            dataLog.to_csv("assets/log upload.csv", index=False, mode="a", header=False)
-        else :
-            dataLog.to_csv("assets/log upload.csv", index=False, mode="w")
+        st.error("❌ Data gagal diupload ke Google Sheets")
 
 st.divider()
 st.subheader("Log Data Upload")
