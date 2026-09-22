@@ -45,5 +45,5 @@ try :
     else :
         st.subheader(f"Tabel Data Well Tahun {tabelOilGas['DATE'].max().year}")
         st.dataframe(tabelWell, hide_index=True)
-except ImportError as e :
+except KeyError as e :
     st.error("Data tidak tersedia pada database.")
