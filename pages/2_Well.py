@@ -26,7 +26,7 @@ try :
         st.area_chart(x="Date", x_label="Tanggal",
                     y="Prod Act Oil", y_label="Prod Act Oil",
                     data=nilai,
-                    use_container_width=True)
+                    width="stretch")
 
     with col2 :
         st.subheader("Production Performance")
@@ -34,7 +34,7 @@ try :
         st.line_chart(x="Date", x_label="Tanggal",
                     y=["Prod Act Gross"] + ["Prod Act Oil"] + ["Gas Own (Mscfd)"] + ["Prod Act WC"], y_label="Production Gross, Oil, Gas Own, WC",
                     data=nilai,
-                    use_container_width=True)
+                    width="stretch")
 
     st.divider()
 
@@ -45,7 +45,7 @@ try :
         st.line_chart(x="Date", x_label="Tanggal",
                     y=["P.csg"] + ["P.tbg"] + ["P.fl"] + ["P.sep"], y_label="P. Casing vs P. Tubing vs P. Flowline vs P. Separator",
                     data=nilai,
-                    use_container_width=True)
+                    width="stretch")
 
     with col4 :
         st.subheader("Gross vs Gas Inj")
@@ -53,6 +53,6 @@ try :
         st.line_chart(x="Date", x_label="Tanggal",
                     y=["Prod Act Gross"] + ["Gas Inj (Mscfd)"], y_label="Gross vs Gas Inj",
                     data=nilai,
-                    use_container_width=True)
+                    width="stretch")
 except KeyError as e :
     st.error("Data tidak tersedia pada database.")
