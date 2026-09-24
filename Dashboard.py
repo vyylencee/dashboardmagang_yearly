@@ -196,7 +196,7 @@ try :
     with table :
         st.subheader("Keterangan Low/Gain/Off")
         hariIni = date.today()
-        h_1 = hariIni - timedelta(days=1)
+        h_1 = hariIni - timedelta(days=5)
         tanggal = tabelOilGas["DATE"].dt.date == h_1
         st.dataframe(tabelOilGas.loc[tanggal, ["DATE", "KETERANGAN LOW/GAIN/OFF"]], hide_index=True)
 
