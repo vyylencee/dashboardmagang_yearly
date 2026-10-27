@@ -17,7 +17,7 @@ try :
                                 "November", "Desember"], key="month")
     tabelOilGas, tabelWip, tabelWell = transform_data(bulan)
 
-    st.divider()
+    st.divider()            
 
     col1,col2 = st.columns(2)
     with col1 :

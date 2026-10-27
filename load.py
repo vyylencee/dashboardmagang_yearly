@@ -80,6 +80,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
                 spreadsheetId=SPREADSHEET_ID,
                 range=f"{sheet1}!A1",
                 valueInputOption="RAW",
+                insertDataOption="INSERT_ROWS",
                 body=body1
             ).execute()
 
@@ -94,6 +95,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
                 spreadsheetId=SPREADSHEET_ID,
                 range=f"{sheet2}!A1",
                 valueInputOption="RAW",
+                insertDataOption="INSERT_ROWS",
                 body=body2
             ).execute()
 
@@ -108,6 +110,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
                 spreadsheetId=SPREADSHEET_ID,
                 range=f"{sheet3}!A1",
                 valueInputOption="RAW",
+                insertDataOption="INSERT_ROWS",
                 body=body3
             ).execute()   
 
