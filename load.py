@@ -63,7 +63,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
         values2 = [df2.columns.tolist()] + df2.values.tolist()
         values3 = [df3.columns.tolist()] + df3.values.tolist()
 
-        batch_upload = 1000
+        batch_upload = 2000
 
         sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range=f"{sheet1}!A:ZZ").execute()
         sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range=f"{sheet2}!A:ZZ").execute()
