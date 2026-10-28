@@ -64,11 +64,11 @@ if file is not None:
 
     try:
         save_data_to_google_sheets(OilGasData, wipData, wellData, "tabelOilGas", "tabelWip", "tabelWell")
-        text_progress.text("Data berhasil diupload ke Google Sheets... ")
+        text_progress.text("Data telah selesai diupload ke Google Sheets... ")
         bar_progress.progress(100)
     except Exception as e :
         st.error("❌ Data gagal diupload ke Google Sheets")
-        
+
 st.divider()
 st.subheader("Log Data Upload")
 
