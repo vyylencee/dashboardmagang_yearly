@@ -94,4 +94,4 @@ def read_data() :
     log_data = pull_data("log")
     return log_data
 
-st.dataframe(read_data(), hide_index=True, ascending=False)
+st.dataframe(read_data(), hide_index=True)
