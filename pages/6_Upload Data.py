@@ -67,10 +67,10 @@ if file is not None:
         text_progress.text("Data berhasil diupload ke Google Sheets... ")
         bar_progress.progress(100)
         st.success("✅ Data berhasil diupload ke Google Sheets")
-
     except Exception as e :
         st.error("❌ Data gagal diupload ke Google Sheets")
-
+    finally :
+        st.success("✅ Data berhasil diupload ke Google Sheets")
 st.divider()
 st.subheader("Log Data Upload")
 
@@ -94,4 +94,4 @@ def read_data() :
     log_data = pull_data("log")
     return log_data
 
-st.dataframe(read_data(), hide_index=True)
+st.dataframe(read_data(), hide_index=True, ascending=False)

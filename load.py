@@ -65,9 +65,9 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
 
         batch_upload = 1000
 
-        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range=f"{sheet1}!A1").execute()
-        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range=f"{sheet2}!A1").execute()
-        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range=f"{sheet3}!A1").execute()
+        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range=f"{sheet1}!A:ZZ").execute()
+        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range=f"{sheet2}!A:ZZ").execute()
+        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range=f"{sheet3}!A:ZZ").execute()
 
         for a in range (0, len(values1), batch_upload):
             batch_values1 = values1[a:a + batch_upload]
@@ -91,7 +91,7 @@ def save_data_to_google_sheets (data1, data2, data3, sheet1, sheet2, sheet3) :
                 'values': batch_values2
             }
 
-            sheet.values().append(
+            sheet.values().update(
                 spreadsheetId=SPREADSHEET_ID,
                 range=f"{sheet2}!A1",
                 valueInputOption="RAW",
